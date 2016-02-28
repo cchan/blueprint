@@ -1,14 +1,14 @@
 window.onload = main;
 
 function main() {
-	console.log('hello world');
-
+	// normalize across browsers
 	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 	window.URL.createObjectURL = window.URL.createObjectURL || window.webkitURL.createObjectURL;
 
-	var fps = 26;
+	var fps = 10;
 	var aspectRatio = 4/3;
-	var video = document.createElement('video');
+	// var video = document.createElement('video');
+	var video = document.getElementById('video');
 	video.width = 360;
 	video.height = video.width / aspectRatio;
 
@@ -18,11 +18,11 @@ function main() {
 
 	var context = canvas.getContext('2d');
 
-	if (navigator.getUserMedia) { // webkit version
+	if (navigator.getUserMedia) {
 		navigator.getUserMedia({video: true}, function(stream) {
 			video.src = window.URL.createObjectURL(stream);
 			video.play();
-		}, function () {
+		}, function () { // error
 			console.error('video error!');
 		});
 	}
@@ -30,10 +30,36 @@ function main() {
 		console.error('no user media, use chrome');
 	}
 
-	start();
 
+	video.addEventListener('loadeddata', function() {
+		console.log('video loaded, bruh');
+		start();
+	});
+
+	var lastFrameImageData = null;
 	function processVideo() {
 		context.drawImage(video, 0, 0, canvas.width, canvas.height);
+		var thisFrameImageData = context.getImageData(0, 0, canvas.width, canvas.height);
+
+		if (lastFrameImageData === null) {
+			lastFrameImageData = thisFrameImageData;
+		}
+		var processedImageData = context.createImageData(thisFrameImageData);
+
+		for (var i = 0; i < thisFrameImageData.data.length; i += 4) {
+			// canvas image data is ordered "r, g, b, a" in a clamped byte array
+
+			processedImageData.data[i] = thisFrameImageData.data[i] - lastFrameImageData.data[i];
+			processedImageData.data[i + 1] = thisFrameImageData.data[i + 1] - lastFrameImageData.data[i + 1];
+			processedImageData.data[i + 2] = thisFrameImageData.data[i + 2] - lastFrameImageData.data[i + 2];
+			processedImageData.data[i + 3] = 255;
+
+		}
+		// console.log(processedImageData, thisFrameImageData, lastFrameImageData);
+
+		context.putImageData(processedImageData, 0, 0);
+
+		lastFrameImageData = thisFrameImageData;
 	}
 
 	function start() {
