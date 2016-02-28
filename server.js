@@ -10,7 +10,7 @@ var options = {
 };
 
 
-var PORT = process.env.PORT || 8080;
+var PORT = process.env.PORT || 443;
 https.listen(PORT, function() {
   console.log('listening on port ' + PORT);
 });
