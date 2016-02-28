@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var https = require('https').Server(app);
+var https = require('https')
 var io = require('socket.io')(https);
 var fs = require("fs");
 
@@ -10,11 +10,12 @@ var options = {
 };
 
 
-var PORT = process.env.PORT || 443;
-https.listen(PORT, function() {
-  console.log('listening on port ' + PORT);
-});
 app.use(express.static('public'));
+
+var PORT = 443;
+https.createServer(options, app).listen(PORT, function(){
+	console.log("Listening at *:"+PORT);
+});
 
 
 io.on('connection', function(socket){

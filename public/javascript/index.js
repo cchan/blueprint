@@ -10,7 +10,7 @@ function main() {
 	// var video = document.createElement('video');
 	var video = document.getElementById('video');
 	// video.width = 360;
-	video.width = 360;
+	video.width = 500;
 	video.height = video.width / aspectRatio;
 
 	var canvas = document.getElementById('canvas');
