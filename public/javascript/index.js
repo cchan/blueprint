@@ -37,6 +37,8 @@ function main() {
 	});
 
 	var lastFrameImageData = null;
+	var movementPos = [];
+
 	function processVideo() {
 		context.drawImage(video, 0, 0, canvas.width, canvas.height);
 		var thisFrameImageData = context.getImageData(0, 0, canvas.width, canvas.height);
@@ -75,8 +77,18 @@ function main() {
 		lastFrameImageData = thisFrameImageData;
 	}
 
-	function indexToCoordinates(index, width, height) {
-		// var
+	function indexToCoordinates(index, width) {
+		var y = Math.floor(index / width);
+		var x = index - (y * width);
+		return {
+			x: x,
+			y: y
+		};
+	}
+
+	function coordsToIndex(x, y, width) {
+		var index = y + width + x;
+		return index;
 	}
 
 	function start() {
