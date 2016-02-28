@@ -1,12 +1,17 @@
 var express = require('express');
 var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var https = require('https').Server(app);
+var io = require('socket.io')(https);
 var fs = require("fs");
+
+var options = {
+	key: fs.readFileSync('/etc/letsencrypt/live/ec2.clive.io/privkey.pem'),
+	cert: fs.readFileSync('/etc/letsencrypt/live/ec2.clive.io/cert.pem')
+};
 
 
 var PORT = process.env.PORT || 8080;
-http.listen(PORT, function() {
+https.listen(PORT, function() {
   console.log('listening on port ' + PORT);
 });
 app.use(express.static('public'));
