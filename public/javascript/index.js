@@ -48,18 +48,35 @@ function main() {
 
 		for (var i = 0; i < thisFrameImageData.data.length; i += 4) {
 			// canvas image data is ordered "r, g, b, a" in a clamped byte array
+			if (getPixelDistance(thisFrameImageData, lastFrameImageData) > 0.1) {
+				processedImageData.data[i] = 0;
+				processedImageData.data[i + 1] = 0;
+				processedImageData.data[i + 2] = 0;
 
-			processedImageData.data[i] = thisFrameImageData.data[i] - lastFrameImageData.data[i];
-			processedImageData.data[i + 1] = thisFrameImageData.data[i + 1] - lastFrameImageData.data[i + 1];
-			processedImageData.data[i + 2] = thisFrameImageData.data[i + 2] - lastFrameImageData.data[i + 2];
-			processedImageData.data[i + 3] = 255;
-
+				// processedImageData.data[i] = thisFrameImageData.data[i];
+				// processedImageData.data[i + 1] = thisFrameImageData.data[i + 1];
+				// processedImageData.data[i + 2] = thisFrameImageData.data[i + 2];
+				processedImageData.data[i + 3] = 255;
+			}
 		}
 		// console.log(processedImageData, thisFrameImageData, lastFrameImageData);
+
+		function getPixelDistance(one, two) {
+			var rdiff = one.data[i] - two.data[i];
+			var gdiff = one.data[i + 1] - two.data[i + 1];
+			var bdiff = one.data[i + 2] - two.data[i + 2];
+
+			var dist = Math.floor(Math.sqrt(Math.pow(rdiff, 2) + Math.pow(gdiff, 2) + Math.pow(bdiff, 2)));
+			return dist / 441;
+		}
 
 		context.putImageData(processedImageData, 0, 0);
 
 		lastFrameImageData = thisFrameImageData;
+	}
+
+	function indexToCoordinates(index, width, height) {
+		// var
 	}
 
 	function start() {
