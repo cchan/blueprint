@@ -19,8 +19,24 @@ hello world
 	socket.on('connect', function(){
 		socket.emit('login');
 		window.onmousemove = function(e){
-			socket.emit('pos',{x:e.clientX,y:e.clientY});
+			//ssocket.emit('pos',{x:e.clientX,y:e.clientY});
 		};
+	});
+	socket.on('username', function(data){
+		window.username = data;
+		console.log(window.username);
+	});
+	socket.on('pos', function(data){
+		console.log(data);
+		
+	var canvas = document.getElementById('canvas');
+	var context = canvas.getContext('2d');
+			context.fillStyle="#FF0000";
+			context.beginPath();
+			context.arc(data.x , data.y, 5, 0, 2*Math.PI);
+			context.fill();
+			context.stroke();
+			context.closePath();
 	});
 })();
 </script>
