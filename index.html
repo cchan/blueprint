@@ -2,7 +2,7 @@
 <script>
 var client = BinaryClient('ws://localhost:9375');
 client.on('open', function(stream){
-  var stream = client.createStream({file: 'hello.txt'});
+  var stream = client.createStream();
   stream.write('Hello');
   stream.write('World!');
   stream.end();
