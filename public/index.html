@@ -7,7 +7,7 @@
   <script type='text/javascript' src='/javascript/index.js'></script>
 </head>
 <body>
-<video id="video" autoplay style="display:none;"></video>
+<video id="video" autoplay></video>
 <canvas id="canvas"></canvas>
 
 <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
@@ -16,9 +16,6 @@
   window.socket = io();
 	socket.on('connect', function(){
 		socket.emit('login');
-		window.onmousemove = function(e){
-			//ssocket.emit('pos',{x:e.clientX,y:e.clientY});
-		};
 	});
 	socket.on('username', function(data){
 		window.username = data;
@@ -27,14 +24,14 @@
 	socket.on('pos', function(data){
 		console.log(data);
 		
-	var canvas = document.getElementById('canvas');
-	var context = canvas.getContext('2d');
-			context.fillStyle="#FF0000";
-			context.beginPath();
-			context.arc(data.x , data.y, 5, 0, 2*Math.PI);
-			context.fill();
-			context.stroke();
-			context.closePath();
+		var canvas = document.getElementById('canvas');
+		var context = canvas.getContext('2d');
+		context.fillStyle="#00FF00";
+		context.beginPath();
+		context.arc(data.x , data.y, 5, 0, 2*Math.PI);
+		context.fill();
+		context.stroke();
+		context.closePath();
 	});
 })();
 </script>

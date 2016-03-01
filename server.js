@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
-var https = require('https')
+var https = require('https');
+var http = require('http');
 var io = require('socket.io')(https);
 var fs = require("fs");
 
@@ -11,10 +12,19 @@ var options = {
 
 
 app.use(express.static('public'));
+app.get('/', function(req,res){
+	res.sendFile('public/index.html');
+});
 
 var PORT = 443;
+http.createServer(function(req,res){
+	res.writeHead(302, {
+		'Location': 'https://ec2.clive.io'+req.url
+	});
+	res.end();
+}).listen(80, function(){console.log("HTTP: Listening at *:80");});
 https.createServer(options, app).listen(PORT, function(){
-	console.log("Listening at *:"+PORT);
+	console.log("HTTPS: Listening at *:"+PORT);
 });
 
 

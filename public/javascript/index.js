@@ -84,8 +84,6 @@ function main() {
 
 			console.log(xsum);
 			
-			window.xavg = xavg;
-			window.yavg = yavg;
 			socket.emit('pos',{x:xavg,y:yavg});
 
 			context.fillStyle="#FF0000";
