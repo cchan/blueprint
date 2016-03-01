@@ -70,7 +70,7 @@ function main() {
 
 		if (movementIndexes.length > 0) {
 
-			console.log(movementIndexes);
+			//console.log(movementIndexes);
 			var xsum = 0;
 			var ysum = 0;
 			for (var i = 0; i < movementIndexes.length; i++) {
@@ -82,7 +82,7 @@ function main() {
 			var xavg = xsum / movementIndexes.length;
 			var yavg = ysum / movementIndexes.length;
 
-			console.log(xsum);
+			//console.log(xsum);
 			
 			socket.emit('pos',{x:xavg,y:yavg});
 

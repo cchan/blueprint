@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var https = require('https');
 var http = require('http');
-var io = require('socket.io')(https);
+var socketio = require('socket.io');
 var fs = require("fs");
 
 var options = {
@@ -23,10 +23,12 @@ http.createServer(function(req,res){
 	});
 	res.end();
 }).listen(80, function(){console.log("HTTP: Listening at *:80");});
-https.createServer(options, app).listen(PORT, function(){
+
+var httpsServer = https.createServer(options, app).listen(PORT, function(){
 	console.log("HTTPS: Listening at *:"+PORT);
 });
 
+var io = socketio.listen(httpsServer);
 
 io.on('connection', function(socket){
 	socket.on('login', function(data){
@@ -52,7 +54,7 @@ io.on('connection', function(socket){
 		if(socket.last100.length >= 100)
 			socket.last100.shift();
 		socket.last100.push({x:data.x,y:data.y});
-		console.log(socket.username, data.x, data.y, socket.last100.length);
+		//console.log(socket.username, data.x, data.y, socket.last100.length);
 	});
 });
 
