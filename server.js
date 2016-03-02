@@ -16,14 +16,16 @@ app.get('/', function(req,res){
 	res.sendFile('public/index.html');
 });
 
+var PORT = 9483;
+
+// Maybe someday: http://stackoverflow.com/a/23975955/1181387
 // http.createServer(function(req,res){
 // 	res.writeHead(302, {
-// 		'Location': 'https://ec2.clive.io'+req.url
+// 		'Location': 'https://ec2.clive.io:'+PORT+req.url
 // 	});
 // 	res.end();
-// }).listen(80, function(){console.log("HTTP: Listening at *:80");});
+// }).listen(PORT, function(){console.log("HTTP: Listening at *:"+PORT);});
 
-var PORT = 9483;
 var httpsServer = https.createServer(options, app).listen(PORT, function(){
 	console.log("HTTPS: Listening at *:"+PORT);
 });
