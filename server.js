@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 var https = require('https');
-var http = require('http');
+// var http = require('http');
 var socketio = require('socket.io');
 var fs = require("fs");
 
@@ -16,14 +16,14 @@ app.get('/', function(req,res){
 	res.sendFile('public/index.html');
 });
 
-var PORT = 443;
-http.createServer(function(req,res){
-	res.writeHead(302, {
-		'Location': 'https://ec2.clive.io'+req.url
-	});
-	res.end();
-}).listen(80, function(){console.log("HTTP: Listening at *:80");});
+// http.createServer(function(req,res){
+// 	res.writeHead(302, {
+// 		'Location': 'https://ec2.clive.io'+req.url
+// 	});
+// 	res.end();
+// }).listen(80, function(){console.log("HTTP: Listening at *:80");});
 
+var PORT = 9483;
 var httpsServer = https.createServer(options, app).listen(PORT, function(){
 	console.log("HTTPS: Listening at *:"+PORT);
 });
